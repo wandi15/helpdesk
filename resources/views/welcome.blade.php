@@ -34,7 +34,8 @@
     </head>
     <body class="antialiased font-sans">
         <!-- Background with gradient animation -->
-        <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 animate-gradient relative overflow-hidden">
+        {{-- <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 animate-gradient relative overflow-hidden"> --}}
+        <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-yellow-500 to-blue-500 animate-gradient relative overflow-hidden">    
             <!-- Decorative circles -->
             <div class="absolute top-0 left-0 w-72 h-72 bg-white rounded-full mix-blend-overlay filter blur-xl opacity-20 animate-float"></div>
             <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-xl opacity-20 animate-float" style="animation-delay: 2s;"></div>
@@ -44,10 +45,8 @@
             <header class="relative z-10 px-6 py-6">
                 <div class="max-w-7xl mx-auto flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 bg-white rounded-lg shadow-lg flex items-center justify-center">
-                            <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
+                        <div class="w-12 h-12 bg-white rounded-lg shadow-lg flex items-center justify-center p-2">
+                            <img src="{{ asset('images/support-ticket.png') }}" alt="Support Ticket Icon" class="w-full h-full object-contain">
                         </div>
                         <div>
                             <h1 class="text-xl font-bold text-white">{{ config('app.name') }}</h1>

@@ -72,11 +72,11 @@
                                 <a href="{{ route('login') }}" class="px-4 py-2 text-white hover:text-white/80 transition-all font-medium">
                                     Log in
                                 </a>
-                                @if (Route::has('register'))
+                                {{-- @if (Route::has('register'))
                                     <a href="{{ route('register') }}" class="px-4 py-2 bg-white text-indigo-600 rounded-lg hover:bg-white/90 transition-all font-medium shadow-lg">
                                         Register
                                     </a>
-                                @endif
+                                @endif --}}
                             @endauth
                         </div>
                     @endif
@@ -92,13 +92,13 @@
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
                             </svg>
-                            <span class="text-white font-medium">Public Ticket Tracking</span>
+                            <span class="text-white font-medium">Ticket Tracking</span>
                         </div>
                         <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 drop-shadow-lg">
                             Monitor All Tickets
                         </h2>
                         <p class="text-lg text-indigo-100 max-w-2xl mx-auto">
-                            Track the progress of all support tickets in real-time
+                            Track progress, view details, and stay updated on all your support requests in one place.
                         </p>
                     </div>
 
