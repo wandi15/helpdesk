@@ -3,6 +3,8 @@
 namespace App\Livewire\FormTicket;
 
 use App\Models\Ticket;
+use App\Mail\TicketClosureConfirmation;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
@@ -36,6 +38,7 @@ class ListTicket extends Component
     public $showEditModal = false;
     public $editingTicket = null;
     public $updateSuccess = false;
+    public $confirmationEmailSent = false;
     public $editForm = [
         'title' => '',
         'description' => '',
@@ -159,7 +162,45 @@ class ListTicket extends Component
         $this->showEditModal = false;
         $this->editingTicket = null;
         $this->updateSuccess = false;
+        $this->confirmationEmailSent = false;
         $this->reset('editForm');
+    }
+
+    public function sendConfirmationEmail($ticketId)
+    {
+        $ticket = Ticket::with('user')->find($ticketId);
+        
+        if (!$ticket) {
+            session()->flash('error', 'Ticket not found.');
+            return;
+        }
+
+        if (!$ticket->user || !$ticket->user->email) {
+            session()->flash('error', 'User email not found.');
+            return;
+        }
+
+        // Generate confirmation token
+        $token = $ticket->generateConfirmationToken();
+        
+        // Build confirmation URL
+        $confirmationUrl = route('ticket.confirm', ['token' => $token]);
+
+        try {
+            // Send email
+            Mail::to($ticket->user->email)->send(
+                new TicketClosureConfirmation($ticket, $confirmationUrl)
+            );
+
+            $this->confirmationEmailSent = true;
+            session()->flash('success', 'Email konfirmasi berhasil dikirim ke ' . $ticket->user->email);
+            
+            // Auto-hide success message after 3 seconds
+            $this->dispatch('confirmation-sent');
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Gagal mengirim email: ' . $e->getMessage());
+        }
     }
 
     #[Computed]

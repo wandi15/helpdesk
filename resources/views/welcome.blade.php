@@ -70,11 +70,11 @@
                                 <a href="{{ route('login') }}" class="px-4 py-2 text-white hover:text-white/80 transition-all font-medium">
                                     Log in
                                 </a>
-                                @if (Route::has('register'))
+                                {{-- @if (Route::has('register'))
                                     <a href="{{ route('register') }}" class="px-4 py-2 bg-white text-indigo-600 rounded-lg hover:bg-white/90 transition-all font-medium shadow-lg">
                                         Register
                                     </a>
-                                @endif
+                                @endif --}}
                             @endauth
                         </div>
                     @endif

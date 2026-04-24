@@ -286,6 +286,21 @@
                                     Update
                                 </button>
                             @endauth
+                            
+                            <!-- Tombol Cetak Tanda Terima - Hanya tampil jika sudah dikonfirmasi -->
+                            @if($ticket->status === 'closed' && $ticket->confirmed_at)
+                                <a 
+                                    href="{{ route('ticket.receipt', ['id' => $ticket->_id]) }}"
+                                    target="_blank"
+                                    class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all transform hover:scale-105 shadow-sm"
+                                    title="Cetak Tanda Terima"
+                                >
+                                    <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                                    </svg>
+                                    Cetak
+                                </a>
+                            @endif
                             </div>
                         </td>
                     </tr>
@@ -573,26 +588,120 @@
                             <p class="text-gray-500 text-xs">{{ $selectedTicket->updated_at->diffForHumans() }}</p>
                         </div>
                     </div>
+
+                    <!-- Confirmation Status -->
+                    @if($selectedTicket->isConfirmed())
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <svg class="h-5 w-5 text-green-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div class="ml-3 flex-1">
+                                    <h4 class="text-sm font-semibold text-green-800">Tiket Telah Dikonfirmasi</h4>
+                                    <p class="text-sm text-green-700 mt-1">
+                                        Dikonfirmasi oleh: <strong>{{ $selectedTicket->confirmation_signature }}</strong>
+                                    </p>
+                                    <p class="text-xs text-green-600 mt-1">
+                                        Pada: {{ $selectedTicket->confirmed_at->format('d M Y, H:i') }}
+                                    </p>
+                                    @if($selectedTicket->confirmation_notes)
+                                        <p class="text-sm text-green-700 mt-2 pt-2 border-t border-green-200">
+                                            <strong>Catatan:</strong> {{ $selectedTicket->confirmation_notes }}
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @elseif($selectedTicket->confirmation_sent_at)
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <svg class="h-5 w-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div class="ml-3">
+                                    <h4 class="text-sm font-semibold text-blue-800">Email Konfirmasi Telah Dikirim</h4>
+                                    <p class="text-xs text-blue-600 mt-1">
+                                        Dikirim pada: {{ $selectedTicket->confirmation_sent_at->format('d M Y, H:i') }}
+                                    </p>
+                                    <p class="text-sm text-blue-700 mt-1">
+                                        Menunggu konfirmasi dari pengguna...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Flash Messages -->
+                    @if(session()->has('success'))
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
+                            <div class="flex items-start">
+                                <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <p class="ml-3 text-sm font-medium text-green-800">{{ session('success') }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if(session()->has('error'))
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4" x-data="{ show: true }" x-show="show">
+                            <div class="flex items-start">
+                                <svg class="h-5 w-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                </svg>
+                                <p class="ml-3 text-sm font-medium text-red-800">{{ session('error') }}</p>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Footer -->
-                <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
-                    <button 
-                        type="button"
-                        wire:click="closeModal"
-                        class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-                    >
-                        Close
-                    </button>
-                    @auth
+                <div class="bg-gray-50 px-6 py-4 flex justify-between gap-3">
+                    <div class="flex gap-2">
                         <button 
                             type="button"
-                            wire:click="editTicket('{{ $selectedTicket->_id }}')"
-                            class="px-4 py-2 border border-green-700 bg-green-100 hover:bg-green-200 rounded-lg text-sm font-medium text-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors shadow-sm"
+                            wire:click="closeModal"
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
                         >
-                            Update Ticket
+                            Close
                         </button>
-                    @endauth
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        @auth
+                            @if(!$selectedTicket->isConfirmed())
+                                <button 
+                                    type="button"
+                                    wire:loading.attr="disabled"
+                                    wire:click="sendConfirmationEmail('{{ $selectedTicket->_id }}')"
+                                    wire:target="sendConfirmationEmail"
+                                    class="inline-flex items-center px-4 py-2 border border-blue-300 bg-blue-100 hover:bg-blue-200 rounded-lg text-sm font-medium text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                    title="Kirim email konfirmasi penutupan tiket"
+                                >
+                                    <svg wire:loading.remove wire:target="sendConfirmationEmail" class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    <svg wire:loading.class.remove="hidden" wire:target="sendConfirmationEmail" class="hidden animate-spin -ml-0.5 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span wire:loading.remove wire:target="sendConfirmationEmail">{{ $selectedTicket->confirmation_sent_at ? 'Kirim Ulang Email' : 'Kirim Email Konfirmasi' }}</span>
+                                    <span wire:loading.class.remove="hidden" wire:target="sendConfirmationEmail" class="hidden">Mengirim...</span>
+                                </button>
+                            @endif
+                            
+                            <button 
+                                type="button"
+                                wire:click="editTicket('{{ $selectedTicket->_id }}')"
+                                class="inline-flex items-center px-4 py-2 border border-green-700 bg-green-100 hover:bg-green-200 rounded-lg text-sm font-medium text-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors shadow-sm"
+                            >
+                                <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                                Update Ticket
+                            </button>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </div>
@@ -828,30 +937,6 @@
                             </div>
                         @endif
                     </div>
-                                    <option value="closed">Closed</option>
-                                </select>
-                                @error('editForm.status')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Success Message -->
-                        @if($updateSuccess)
-                            <div class="rounded-lg bg-green-50 p-4">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <svg class="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-sm font-medium text-green-800">Ticket updated successfully!</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
 
                     <!-- Footer -->
                     <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
@@ -884,6 +969,13 @@
         setTimeout(() => {
             $wire.closeEditModal();
         }, 1500);
+    });
+
+    $wire.on('confirmation-sent', () => {
+        // Refresh the ticket data to show updated confirmation status
+        setTimeout(() => {
+            $wire.$refresh();
+        }, 2000);
     });
 </script>
 @endscript

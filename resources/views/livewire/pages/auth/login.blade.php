@@ -113,7 +113,7 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <!-- Register Link -->
-        @if (Route::has('register'))
+        {{-- @if (Route::has('register'))
             <div class="text-center mt-6 pt-6 border-t border-gray-200">
                 <p class="text-sm text-gray-600">
                     Don't have an account?
@@ -122,6 +122,6 @@ new #[Layout('layouts.guest')] class extends Component
                     </a>
                 </p>
             </div>
-        @endif
+        @endif --}}
     </form>
 </div>

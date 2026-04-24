@@ -8,6 +8,14 @@ Route::view('/', 'welcome');
 Route::view('list-tickets', 'public-tickets')
     ->name('public.tickets');
 
+// Ticket confirmation page (no auth required)
+Route::get('ticket/confirm/{token}', \App\Livewire\TicketConfirmation::class)
+    ->name('ticket.confirm');
+
+// Ticket receipt page (no auth required - accessible after confirmation)
+Route::get('ticket/receipt/{id}', [\App\Http\Controllers\TicketReceiptController::class, 'show'])
+    ->name('ticket.receipt');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
