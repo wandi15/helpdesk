@@ -77,13 +77,24 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                     </div>
-                    <input 
+                    {{-- <input 
                         type="text" 
                         id="division" 
                         wire:model="division"
                         class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 @error('division') border-red-500 @enderror"
                         placeholder="Contoh: IT, Finance, HR, Marketing"
+                    > --}}
+                    <select 
+                        id="division" 
+                        wire:model="division"
+                        class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 @error('division') border-red-500 @enderror"
                     >
+                        <option value="">-- Pilih Divisi --</option>
+                        <option value="IT">IT</option>
+                        <option value="Finance">Finance</option>
+                        <option value="HR">HR</option>
+                        <option value="Marketing">Marketing</option>
+                    </select>
                 </div>
                 @error('division') 
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
