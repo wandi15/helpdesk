@@ -90,10 +90,12 @@
                         class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 @error('division') border-red-500 @enderror"
                     >
                         <option value="">-- Pilih Divisi --</option>
-                        <option value="IT">IT</option>
-                        <option value="Finance">Finance</option>
-                        <option value="HR">HR</option>
-                        <option value="Marketing">Marketing</option>
+                        <option value="Divisi Sekper, Analis & Operasional">Divisi Sekper, Analis & Operasional</option>
+                        <option value="Divisi Klaim & Subrogasi">Divisi Klaim & Subrogasi</option>
+                        <option value="Divisi Bisnis & Penjaminan">Divisi Bisnis & Penjaminan</option>
+                        <option value="Divisi Akuntansi, Keuangan & Investasi">Divisi Akuntansi, Keuangan & Investasi</option>
+                        <option value="Divisi Pengendalian, MR & Ristek">Divisi Pengendalian, MR & Ristek</option>
+                        <option value="Bagian Kepatuhan & Pengawas Internal">Bagian Kepatuhan & Pengawas Internal</option>
                     </select>
                 </div>
                 @error('division') 
