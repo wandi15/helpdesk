@@ -25,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -48,5 +49,37 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Check if user has Administrator role
+     */
+    public function isAdministrator(): bool
+    {
+        return $this->role === 'administrator';
+    }
+
+    /**
+     * Check if user has Admin role
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user has Operasional role
+     */
+    public function isOperasional(): bool
+    {
+        return $this->role === 'operasional';
+    }
+
+    /**
+     * Check if user can access menu (Administrator and Admin)
+     */
+    public function canAccessAdminMenu(): bool
+    {
+        return in_array($this->role, ['administrator', 'admin']);
     }
 }

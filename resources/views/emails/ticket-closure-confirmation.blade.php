@@ -125,6 +125,20 @@
                 <div class="info-label">Dibuat:</div>
                 <div class="info-value">{{ $ticket->created_at->format('d M Y, H:i') }}</div>
             </div>
+
+            @if($ticket->submitter_name || $ticket->submitter_email)
+            <div class="info-row" style="border-top: 2px solid #667eea; margin-top: 10px; padding-top: 10px; border-bottom: none;">
+                <div class="info-label" style="color: #667eea; font-weight: bold;">Diajukan oleh:</div>
+                <div class="info-value">
+                    @if($ticket->submitter_name)
+                        <strong>{{ $ticket->submitter_name }}</strong><br>
+                    @endif
+                    @if($ticket->submitter_email)
+                        <span style="color: #6b7280;">{{ $ticket->submitter_email }}</span>
+                    @endif
+                </div>
+            </div>
+            @endif
         </div>
 
         <div style="text-align: center;">
@@ -140,6 +154,14 @@
         <p style="color: #6b7280; font-size: 14px;">
             Jika Anda tidak merasa tiket ini sudah selesai atau memiliki pertanyaan, silakan hubungi tim support kami.
         </p>
+
+        @if($ticket->submitter_email && $ticket->submitter_email !== $ticket->user->email)
+        <div style="background: #e0e7ff; border-left: 4px solid #667eea; padding: 12px; margin: 15px 0; border-radius: 4px;">
+            <p style="margin: 0; font-size: 13px; color: #4338ca;">
+                <strong>ℹ️ Informasi:</strong> Email konfirmasi ini dikirim ke <strong>{{ $ticket->user->email }}</strong> (user input) dan <strong>{{ $ticket->submitter_email }}</strong> (pengaju). Kedua pihak dapat melakukan konfirmasi penutupan tiket.
+            </p>
+        </div>
+        @endif
     </div>
 
     <div class="footer">

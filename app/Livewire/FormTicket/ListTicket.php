@@ -187,13 +187,30 @@ class ListTicket extends Component
         $confirmationUrl = route('ticket.confirm', ['token' => $token]);
 
         try {
-            // Send email
+            $emailsSent = [];
+            
+            // Send email to user
             Mail::to($ticket->user->email)->send(
                 new TicketClosureConfirmation($ticket, $confirmationUrl)
             );
+            $emailsSent[] = $ticket->user->email;
+
+            // Send email to submitter if exists and different from user email
+            if (!empty($ticket->submitter_email) && $ticket->submitter_email !== $ticket->user->email) {
+                Mail::to($ticket->submitter_email)->send(
+                    new TicketClosureConfirmation($ticket, $confirmationUrl)
+                );
+                $emailsSent[] = $ticket->submitter_email;
+            }
 
             $this->confirmationEmailSent = true;
-            session()->flash('success', 'Email konfirmasi berhasil dikirim ke ' . $ticket->user->email);
+            
+            // Build success message based on number of recipients
+            if (count($emailsSent) > 1) {
+                session()->flash('success', 'Email konfirmasi berhasil dikirim ke ' . count($emailsSent) . ' penerima: ' . implode(', ', $emailsSent));
+            } else {
+                session()->flash('success', 'Email konfirmasi berhasil dikirim ke ' . $emailsSent[0]);
+            }
             
             // Auto-hide success message after 3 seconds
             $this->dispatch('confirmation-sent');

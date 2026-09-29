@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
@@ -19,6 +20,9 @@ class CreateTicket extends Component
     
     #[Validate('required|min:2')]
     public $division = '';
+    
+    public $submitterName = '';
+    public $submitterEmail = '';
     
     #[Validate('required|min:5|max:255')]
     public $title = '';
@@ -39,6 +43,19 @@ class CreateTicket extends Component
     
     public $successMessage = '';
     public $uploadError = '';
+    
+    public $isAuthenticated = false;
+    public $userRole = null;
+
+    public function mount()
+    {
+        if (Auth::check()) {
+            $this->isAuthenticated = true;
+            $this->name = Auth::user()->name;
+            $this->email = Auth::user()->email;
+            $this->userRole = Auth::user()->role ?? null;
+        }
+    }
 
     public function setAttachment($fileData)
     {
@@ -70,6 +87,8 @@ class CreateTicket extends Component
             'name' => 'required|min:2',
             'email' => 'required|email',
             'division' => 'required|min:2',
+            'submitterName' => 'nullable|min:2',
+            'submitterEmail' => 'nullable|email',
             'title' => 'required|min:5|max:255',
             'ticketType' => 'required|in:teknis,sistem',
             'priority' => 'required|in:low,medium,high',
@@ -90,6 +109,8 @@ class CreateTicket extends Component
             'name.required' => 'Nama wajib diisi.',
             'email.required' => 'Email wajib diisi.',
             'division.required' => 'Divisi wajib diisi.',
+            'submitterName.min' => 'Nama pengaju minimal 2 karakter.',
+            'submitterEmail.email' => 'Format email pengaju tidak valid.',
             'title.required' => 'Judul tiket wajib diisi.',
             'ticketType.required' => 'Pilih jenis tiket.',
             'systemType.required' => 'Jenis sistem wajib dipilih.',
@@ -162,13 +183,25 @@ class CreateTicket extends Component
             $ticketData['attachment'] = $attachmentPath;
         }
 
+        // Add submitter info if provided
+        if (!empty($this->submitterName)) {
+            $ticketData['submitter_name'] = $this->submitterName;
+        }
+        if (!empty($this->submitterEmail)) {
+            $ticketData['submitter_email'] = $this->submitterEmail;
+        }
+
         Ticket::create($ticketData);
 
         // Show success message
         $this->successMessage = 'Tiket Anda telah berhasil dikirim! Kami akan segera menindaklanjutinya.';
         
-        // Reset form
-        $this->reset(['title', 'description', 'priority', 'email', 'name', 'division', 'ticketType', 'systemType', 'attachmentData']);
+        // Reset form (keep name, email, division for authenticated users)
+        if ($this->isAuthenticated) {
+            $this->reset(['title', 'description', 'ticketType', 'systemType', 'submitterName', 'submitterEmail', 'attachmentData']);
+        } else {
+            $this->reset(['title', 'description', 'priority', 'email', 'name', 'division', 'ticketType', 'systemType', 'submitterName', 'submitterEmail', 'attachmentData']);
+        }
         $this->priority = 'medium';
         
         Log::info('Ticket created successfully');

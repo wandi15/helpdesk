@@ -20,6 +20,8 @@ class Ticket extends Model
         'ticket_type',
         'system_type',
         'attachment',
+        'submitter_name',
+        'submitter_email',
         'confirmation_token',
         'confirmation_sent_at',
         'confirmed_at',

@@ -33,12 +33,23 @@ new class extends Component
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('tickets')" :active="request()->routeIs('tickets')" wire:navigate>
-                        {{ __('Tickets') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('register')" :active="request()->routeIs('register')" wire:navigate>
-                        {{ __('Register') }}
-                    </x-nav-link>
+                    @if(auth()->user()->isAdministrator())
+                        <x-nav-link :href="route('tickets')" :active="request()->routeIs('tickets')" wire:navigate>
+                            {{ __('Tickets') }}
+                        </x-nav-link>
+                        <!-- Menu khusus Administrator -->
+                        <x-nav-link :href="route('users')" :active="request()->routeIs('users')" wire:navigate>
+                            {{ __('Users') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('register')" :active="request()->routeIs('register')" wire:navigate>
+                            {{ __('Register') }}
+                        </x-nav-link>
+                    @elseif(auth()->user()->isAdmin())
+                        <!-- Menu khusus Admin -->
+                        {{-- <x-nav-link :href="route('register')" :active="request()->routeIs('register')" wire:navigate>
+                            {{ __('Register') }}
+                        </x-nav-link> --}}
+                    @endif
                 </div>
             </div>
 
@@ -90,12 +101,24 @@ new class extends Component
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('tickets')" :active="request()->routeIs('tickets')" wire:navigate>
-                {{ __('Tickets') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')" wire:navigate>
-                {{ __('Register') }}
-            </x-responsive-nav-link>
+            
+            @if(auth()->user()->isAdministrator())
+                <x-responsive-nav-link :href="route('tickets')" :active="request()->routeIs('tickets')" wire:navigate>
+                    {{ __('Tickets') }}
+                </x-responsive-nav-link>
+                <!-- Menu khusus Administrator -->
+                <x-responsive-nav-link :href="route('users')" :active="request()->routeIs('users')" wire:navigate>
+                    {{ __('Users') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')" wire:navigate>
+                    {{ __('Register') }}
+                </x-responsive-nav-link>
+            @elseif(auth()->user()->isAdmin())
+                <!-- Menu khusus Admin -->
+                {{-- <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')" wire:navigate>
+                    {{ __('Register') }}
+                </x-responsive-nav-link> --}}
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

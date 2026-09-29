@@ -522,27 +522,36 @@
                             <!-- PDF Preview -->
                             <div class="bg-white rounded-lg p-3 border border-gray-200">
                                 <p class="text-xs font-medium text-gray-600 mb-2">PDF Preview:</p>
-                                <div class="relative w-full" style="height: 500px;">
-                                    <iframe 
-                                        src="{{ $fileUrl }}#toolbar=0&navpanes=0&scrollbar=0" 
+                                <div class="relative w-full overflow-hidden rounded-lg border border-gray-300" style="height: 600px;">
+                                    <object 
+                                        data="{{ $fileUrl }}#toolbar=0&navpanes=0&scrollbar=0" 
                                         type="application/pdf"
-                                        class="w-full h-full border-0 rounded-lg shadow-inner"
-                                        title="{{ $fileName }}"
+                                        class="w-full h-full"
+                                        style="min-height: 600px;"
                                     >
-                                        <div class="flex flex-col items-center justify-center h-full bg-gray-50 text-gray-500">
-                                            <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <!-- Fallback jika PDF tidak bisa ditampilkan -->
+                                        <div class="flex flex-col items-center justify-center h-full bg-gray-50 text-gray-500 p-8">
+                                            <svg class="w-16 h-16 mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                                             </svg>
-                                            <p class="text-sm mb-2">Cannot preview PDF in this browser</p>
-                                            <a href="{{ $fileUrl }}" target="_blank" class="text-indigo-600 hover:text-indigo-800 underline text-sm">
-                                                Open in new tab
+                                            <p class="text-sm font-medium text-gray-700 mb-2">Cannot preview PDF in this browser</p>
+                                            <p class="text-xs text-gray-500 mb-4">Your browser does not support embedded PDFs</p>
+                                            <a 
+                                                href="{{ $fileUrl }}" 
+                                                target="_blank" 
+                                                class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                                            >
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                                </svg>
+                                                Open in New Tab
                                             </a>
                                         </div>
-                                    </iframe>
+                                    </object>
                                 </div>
                                 <p class="text-xs text-gray-500 mt-2 text-center">
                                     <a href="{{ $fileUrl }}" target="_blank" class="text-indigo-600 hover:text-indigo-800 underline">
-                                        Open PDF in new tab for better viewing
+                                        Click here to open PDF in new tab for better viewing
                                     </a>
                                 </p>
                             </div>
@@ -574,6 +583,46 @@
                             </div>
                         </div>
                     </div>
+
+                    @if($selectedTicket->submitter_name || $selectedTicket->submitter_email)
+                    <!-- Actual Submitter Info -->
+                    <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+                        <label class="block text-sm font-semibold text-blue-700 mb-3 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            Diajukan Atas Nama
+                        </label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            @if($selectedTicket->submitter_name)
+                            <div class="flex items-center gap-2">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center">
+                                    <span class="text-sm font-semibold text-blue-700">
+                                        {{ strtoupper(substr($selectedTicket->submitter_name, 0, 1)) }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-blue-600">Nama Pengaju:</p>
+                                    <p class="text-sm font-bold text-blue-900">{{ $selectedTicket->submitter_name }}</p>
+                                </div>
+                            </div>
+                            @endif
+                            @if($selectedTicket->submitter_email)
+                            <div class="flex items-center gap-2">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-blue-600">Email Pengaju:</p>
+                                    <p class="text-sm font-bold text-blue-900 break-all">{{ $selectedTicket->submitter_email }}</p>
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
 
                     <!-- Timestamps -->
                     <div class="grid grid-cols-2 gap-4 text-sm">
@@ -676,7 +725,11 @@
                                     wire:click="sendConfirmationEmail('{{ $selectedTicket->_id }}')"
                                     wire:target="sendConfirmationEmail"
                                     class="inline-flex items-center px-4 py-2 border border-blue-300 bg-blue-100 hover:bg-blue-200 rounded-lg text-sm font-medium text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                                    title="Kirim email konfirmasi penutupan tiket"
+                                    @if($selectedTicket->submitter_email && $selectedTicket->submitter_email !== $selectedTicket->user->email)
+                                    title="Email akan dikirim ke: {{ $selectedTicket->user->email }} dan {{ $selectedTicket->submitter_email }}"
+                                    @else
+                                    title="Kirim email konfirmasi penutupan tiket ke {{ $selectedTicket->user->email }}"
+                                    @endif
                                 >
                                     <svg wire:loading.remove wire:target="sendConfirmationEmail" class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -685,7 +738,12 @@
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    <span wire:loading.remove wire:target="sendConfirmationEmail">{{ $selectedTicket->confirmation_sent_at ? 'Kirim Ulang Email' : 'Kirim Email Konfirmasi' }}</span>
+                                    <span wire:loading.remove wire:target="sendConfirmationEmail">
+                                        {{ $selectedTicket->confirmation_sent_at ? 'Kirim Ulang Email' : 'Kirim Email Konfirmasi' }}
+                                        @if($selectedTicket->submitter_email && $selectedTicket->submitter_email !== $selectedTicket->user->email)
+                                            <span class="ml-1 text-xs">(2 penerima)</span>
+                                        @endif
+                                    </span>
                                     <span wire:loading.class.remove="hidden" wire:target="sendConfirmationEmail" class="hidden">Mengirim...</span>
                                 </button>
                             @endif
@@ -908,12 +966,24 @@
                                     >
                                 </div>
                             @elseif($isPdf)
-                                <div class="bg-white p-2 rounded-lg">
-                                    <iframe 
-                                        src="{{ $fileUrl }}#toolbar=0" 
-                                        class="w-full h-64 border-0 rounded"
-                                        title="{{ $fileName }}"
-                                    ></iframe>
+                                <div class="bg-white rounded-lg border border-gray-300 overflow-hidden" style="height: 320px;">
+                                    <object 
+                                        data="{{ $fileUrl }}#toolbar=0&navpanes=0&scrollbar=0" 
+                                        type="application/pdf"
+                                        class="w-full h-full"
+                                        style="min-height: 320px;"
+                                    >
+                                        <!-- Fallback -->
+                                        <div class="flex flex-col items-center justify-center h-full bg-gray-50 p-4">
+                                            <svg class="w-12 h-12 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                            </svg>
+                                            <p class="text-xs text-gray-600 mb-2">PDF preview not available</p>
+                                            <a href="{{ $fileUrl }}" target="_blank" class="text-xs text-indigo-600 hover:text-indigo-800 underline">
+                                                Open in new tab
+                                            </a>
+                                        </div>
+                                    </object>
                                 </div>
                             @endif
                             

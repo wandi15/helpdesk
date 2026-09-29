@@ -103,6 +103,59 @@
                     <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden">
                         <div class="px-8 py-10">
                             <livewire:form-ticket.create-ticket />
+                            {{-- @auth
+                                <!-- User logged in - Show form -->
+                                <livewire:form-ticket.create-ticket />
+                            @else
+                                <!-- User not logged in - Show login prompt -->
+                                <div class="text-center py-12">
+                                    <div class="inline-flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full mb-6">
+                                        <svg class="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Login Required</h3>
+                                    <p class="text-gray-600 mb-8 max-w-md mx-auto">
+                                        Silakan login terlebih dahulu untuk dapat membuat ticket support. 
+                                        Jika Anda belum memiliki akun, silakan hubungi administrator.
+                                    </p>
+                                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                        <a 
+                                            href="{{ route('login') }}" 
+                                            class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                        >
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                                            </svg>
+                                            Login to Create Ticket
+                                        </a>
+                                        <a 
+                                            href="{{ route('public.tickets') }}" 
+                                            class="inline-flex items-center justify-center px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all shadow-md border border-gray-200"
+                                        >
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                            </svg>
+                                            View Existing Tickets
+                                        </a>
+                                    </div>
+                                    
+                                    <!-- Info Box -->
+                                    <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg max-w-md mx-auto">
+                                        <div class="flex items-start gap-3">
+                                            <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            <div class="text-left">
+                                                <p class="text-sm text-blue-800 font-medium">Need Help?</p>
+                                                <p class="text-sm text-blue-700 mt-1">
+                                                    Jika Anda tidak memiliki akses login, silakan hubungi tim IT atau administrator untuk mendapatkan akun.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endauth --}}
                         </div>
                     </div>
 

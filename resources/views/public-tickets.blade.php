@@ -58,25 +58,23 @@
                     </div>
                     @if (Route::has('login'))
                         <div class="flex items-center gap-4">
-                            <a href="{{ url('/') }}" class="px-4 py-2 text-white hover:text-white/80 transition-all font-medium flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                </svg>
-                                New Ticket
-                            </a>
                             @auth
+                                <a href="{{ url('/') }}" class="px-4 py-2 text-white hover:text-white/80 transition-all font-medium flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                    New Ticket
+                                </a>
                                 <a href="{{ url('/dashboard') }}" class="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-all font-medium">
                                     Dashboard
                                 </a>
                             @else
-                                <a href="{{ route('login') }}" class="px-4 py-2 text-white hover:text-white/80 transition-all font-medium">
-                                    Log in
+                                <a href="{{ route('login') }}" class="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-all font-medium flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                                    </svg>
+                                    Login to Create Ticket
                                 </a>
-                                {{-- @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="px-4 py-2 bg-white text-indigo-600 rounded-lg hover:bg-white/90 transition-all font-medium shadow-lg">
-                                        Register
-                                    </a>
-                                @endif --}}
                             @endauth
                         </div>
                     @endif

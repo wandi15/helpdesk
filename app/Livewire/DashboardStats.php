@@ -10,6 +10,8 @@ use Livewire\Attributes\Computed;
 class DashboardStats extends Component
 {
     public $statusFilter = 'all';
+    public $selectedTicket = null;
+    public $showDetailModal = false;
 
     #[Computed]
     public function stats()
@@ -35,6 +37,18 @@ class DashboardStats extends Component
         }
 
         return $query->get();
+    }
+
+    public function viewDetail($ticketId)
+    {
+        $this->selectedTicket = Ticket::with('user')->find($ticketId);
+        $this->showDetailModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showDetailModal = false;
+        $this->selectedTicket = null;
     }
 
     public function render()

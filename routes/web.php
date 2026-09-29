@@ -24,6 +24,10 @@ Route::view('tickets', 'tickets')
     ->middleware(['auth'])
     ->name('tickets');
 
+Route::view('users', 'users')
+    ->middleware(['auth'])
+    ->name('users');
+
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
