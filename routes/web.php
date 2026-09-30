@@ -24,6 +24,10 @@ Route::view('tickets', 'tickets')
     ->middleware(['auth'])
     ->name('tickets');
 
+Route::get('tickets/export', [\App\Http\Controllers\TicketExportController::class, 'export'])
+    ->middleware(['auth'])
+    ->name('tickets.export');
+
 Route::view('users', 'users')
     ->middleware(['auth'])
     ->name('users');

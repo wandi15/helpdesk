@@ -24,6 +24,12 @@ class ListTicket extends Component
     public $priorityFilter = 'all';
     
     #[Url(keep: true)]
+    public $dateFrom = '';
+
+    #[Url(keep: true)]
+    public $dateTo = '';
+
+    #[Url(keep: true)]
     public $sortBy = 'created_at';
     
     #[Url(keep: true)]
@@ -62,6 +68,22 @@ class ListTicket extends Component
 
     public function updatingPriorityFilter()
     {
+        $this->resetPage();
+    }
+
+    public function updatingDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDateTo()
+    {
+        $this->resetPage();
+    }
+
+    public function resetPeriod()
+    {
+        $this->reset('dateFrom', 'dateTo');
         $this->resetPage();
     }
 
@@ -241,6 +263,15 @@ class ListTicket extends Component
         // Priority filter
         if ($this->priorityFilter !== 'all') {
             $query->where('priority', $this->priorityFilter);
+        }
+
+        // Period filter (berdasarkan tanggal dibuat)
+        if ($this->dateFrom) {
+            $query->where('created_at', '>=', \Carbon\Carbon::parse($this->dateFrom)->startOfDay());
+        }
+
+        if ($this->dateTo) {
+            $query->where('created_at', '<=', \Carbon\Carbon::parse($this->dateTo)->endOfDay());
         }
 
         // Sorting

@@ -105,6 +105,35 @@
                     </select>
                 </div>
             </div>
+
+            <!-- Period Filter -->
+            <div class="mt-4 flex flex-col md:flex-row md:items-center gap-3">
+                <span class="text-sm font-medium text-gray-700">Periode:</span>
+                <div class="flex items-center gap-2">
+                    <input
+                        type="date"
+                        wire:model.live="dateFrom"
+                        max="{{ $dateTo ?: '' }}"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    >
+                    <span class="text-sm text-gray-500">s/d</span>
+                    <input
+                        type="date"
+                        wire:model.live="dateTo"
+                        min="{{ $dateFrom ?: '' }}"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    >
+                </div>
+                @if($dateFrom || $dateTo)
+                    <button
+                        type="button"
+                        wire:click="resetPeriod"
+                        class="text-sm text-indigo-600 hover:text-indigo-800"
+                    >
+                        Reset periode
+                    </button>
+                @endif
+            </div>
         </div>
     </div>
 
