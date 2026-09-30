@@ -100,7 +100,7 @@ class TicketExportController extends Controller
                     $ticket->created_at?->format('Y-m-d H:i'),
                     $ticket->updated_at?->format('Y-m-d H:i'),
                     $ticket->confirmed_at?->format('Y-m-d H:i'),
-                    $ticket->confirmed_note,
+                    $ticket->confirmation_notes,
 
                 ]);
             }
